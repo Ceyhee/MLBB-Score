@@ -1,0 +1,397 @@
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLBB Analytics Pro - Ultimate Final Fix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: #f8fafc; min-height: 100vh; overflow-x: hidden; }
+        .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .input-pro { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(71, 85, 105, 0.4); color: #fff; outline: none; transition: 0.3s; }
+        .input-pro:focus { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
+        .accent-bg { background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob { animation: blob 7s infinite; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="fixed top-0 w-full z-50 backdrop-blur-md bg-gray-950/70 border-b border-white/5">
+        <div class="mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-2 group">
+    <div class="accent-bg p-2 rounded-lg shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
+        <i class="fas fa-shield-halved text-white text-lg"></i>
+    </div>
+    <span class="text-xl font-black tracking-tighter text-white italic uppercase">
+        YR MLBB<span class="text-blue-500 drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">PRO</span>
+    </span>
+</div>
+
+            <div class="flex items-center bg-white/5 p-1 rounded-xl border border-white/10">
+                <button id="btn-id" onclick="setLang('id')" class="px-3 py-1.5 text-[10px] font-bold uppercase rounded-lg accent-bg transition-all">ID</button>
+                <button id="btn-en" onclick="setLang('en')" class="px-3 py-1.5 text-[10px] font-bold uppercase rounded-lg hover:bg-white/10 transition-all text-slate-400">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden pt-16 text-center">
+        <div class="absolute inset-0">
+            <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-900/20 rounded-full filter blur-3xl animate-blob"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-purple-900/20 rounded-full filter blur-3xl animate-blob"></div>
+        </div>
+        <div class="relative z-10 px-4">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">ANALYTICS ENGINE</h1>
+            <p class="text-gray-400 max-w-xl mx-auto text-sm lang-text" data-id="Kalkulasi kemenangan & Win Rate secara presisi MLBB." data-en="Calculate wins & Win Rate precisely MLBB.">Kalkulasi kemenangan & Win Rate secara presisi MLBB.</p>
+        </div>
+    </section>
+
+    <main class="relative z-20 -mt-10 pb-20 px-4 max-w-6xl mx-auto">
+        <div class="grid xl:grid-cols-2 gap-8 mb-20">
+            
+            <div class="glass p-8 rounded-[2.5rem] border-t-4 border-blue-500">
+               <h2 class="text-lg font-bold tracking-tight uppercase mb-8 flex items-center gap-3">
+    <i class="fas fa-trophy text-blue-400"></i>
+    <span class="lang-text" data-id="Kalkulator Pangkat" data-en="Rank Calculator">Kalkulator Pangkat</span>
+</h2>
+
+
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="space-y-2 text-left">
+                        <label class="text-[10px] font-black text-slate-500 uppercase lang-text" data-id="Rank Saat Ini" data-en="Current Rank">Rank Saat Ini</label>
+                        <select id="cRank" onchange="syncRank('c')" class="input-pro w-full p-4 rounded-2xl text-sm"></select>
+                    </div>
+                    <div class="space-y-2 text-left">
+                        <label class="text-[10px] font-black text-slate-500 uppercase">Stars (0-5)</label>
+                        <input type="number" id="cStar" oninput="syncStar('c')" class="input-pro w-full p-4 rounded-2xl text-sm" placeholder="0">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-8 text-left">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-500 uppercase lang-text" data-id="Target Rank" data-en="Target Rank">Target Rank</label>
+                        <select id="tRank" onchange="syncRank('t')" class="input-pro w-full p-4 rounded-2xl text-sm"></select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-500 uppercase lang-text" data-id="Target Bintang" data-en="Target Stars">Target Bintang</label>
+                        <input type="number" id="tStar" oninput="syncStar('t')" class="input-pro w-full p-4 rounded-2xl text-sm" placeholder="0">
+                    </div>
+                </div>
+                <button onclick="calculatePath()" class="accent-bg w-full py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] shadow-xl hover:scale-[1.02] transition">Generate Hasil</button>
+                <div id="rankRes" class="hidden mt-8 p-6 rounded-3xl bg-blue-500/10 border border-blue-500/20">
+                    <div class="grid grid-cols-3 gap-2 text-center mb-4">
+                        <div class="p-2"><p class="text-[8px] text-slate-500 uppercase font-bold">Net Win</p><p id="netWin" class="text-xl font-black text-blue-400"></p></div>
+                        <div class="p-2"><p class="text-[8px] text-slate-500 uppercase font-bold">Bonus</p><p id="starBonus" class="text-xl font-black text-yellow-400"></p></div>
+                        <div class="p-2"><p class="text-[8px] text-slate-500 uppercase font-bold">Grading</p><p id="gradingBonus" class="text-xl font-black text-emerald-400"></p></div>
+                    </div>
+                    <p id="rankSummary" class="text-xs text-center text-slate-300 italic border-t border-white/10 pt-4 leading-relaxed"></p>
+                </div>
+            </div>
+
+            <div class="glass p-8 rounded-[2.5rem] border-t-4 border-emerald-500 shadow-2xl relative overflow-hidden">
+    <div class="flex items-center gap-3 mb-8 text-left">
+        <i class="fas fa-chart-line text-emerald-400 text-xl"></i>
+        <h2 class="text-lg font-bold tracking-tight uppercase lang-text" data-id="Analisis Performa Akun" data-en="Account Performance Analytics">Analisis Performa Akun</h2>
+    </div>
+
+    <div class="space-y-5 mb-8 text-left">
+        <div class="space-y-2">
+            <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest lang-text" data-id="Total Pertandingan" data-en="Total Matches">Total Pertandingan</label>
+            <input type="number" id="wrMatch" class="input-pro w-full p-4 rounded-2xl text-sm" placeholder="1000">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-2">
+                <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest lang-text" data-id="WR Saat Ini (%)" data-en="Current WR (%)">WR Saat Ini (%)</label>
+                <input type="number" id="wrCurrent" step="0.01" class="input-pro w-full p-4 rounded-2xl text-sm" placeholder="50.00">
+            </div>
+            <div class="space-y-2">
+                <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest lang-text" data-id="Target WR (%)" data-en="Target WR (%)">Target WR (%)</label>
+                <input type="number" id="wrTarget" step="0.01" class="input-pro w-full p-4 rounded-2xl text-sm" placeholder="60.00">
+            </div>
+        </div>
+    </div>
+
+    <button onclick="calcWR()" class="bg-white text-slate-900 w-full py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] hover:bg-slate-100 transition shadow-lg active:scale-95 duration-200">
+        <span class="lang-text" data-id="Analisis Akun" data-en="Analyze Account">Analisis Akun</span>
+    </button>
+
+    <div id="wrRes" class="hidden mt-8 space-y-6">
+        <div class="grid grid-cols-2 gap-4">
+            <div class="p-5 bg-blue-500/10 rounded-2xl border border-blue-500/20 text-center">
+                <p id="vWin" class="text-2xl font-black text-blue-400"></p>
+                <p class="text-[9px] text-slate-400 font-bold lang-text" data-id="Total Menang" data-en="Total Wins">Total Menang</p>
+            </div>
+            <div class="p-5 bg-red-500/10 rounded-2xl border border-red-500/20 text-center">
+                <p id="vLoss" class="text-2xl font-black text-red-400"></p>
+                <p class="text-[9px] text-slate-400 font-bold lang-text" data-id="Total Kalah" data-en="Total Losses">Total Kalah</p>
+            </div>
+        </div>
+
+        <div class="p-6 bg-emerald-500/10 border border-emerald-500/20 rounded-[2rem] text-center">
+            <p class="text-[10px] text-emerald-400 font-bold uppercase mb-2 tracking-widest lang-text" data-id="Misi Kemenangan" data-en="Victory Mission">Misi Kemenangan</p>
+            <h3 id="vMsgMain" class="text-sm text-white mb-2 italic"></h3>
+            <p id="vStreak" class="text-5xl font-black text-emerald-400"></p>
+        </div>
+
+        <div class="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-4 text-left">
+            <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                <span class="text-[10px] font-bold text-slate-500 uppercase lang-text" data-id="Rating Akun" data-en="Account Rating">Rating Akun</span>
+                <span id="vAccountStatus" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter"></span>
+            </div>
+            <div class="space-y-1">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest lang-text" data-id="Saran Sistem" data-en="System Advice">Saran Sistem</p>
+                <div id="vAdvice" class="text-xs space-y-2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <div class="max-w-3xl mx-auto space-y-4 mb-20 text-left">
+            <h2 class="text-center text-3xl font-bold mb-10 text-white">FAQ</h2>
+            <details class="group rounded-2xl border border-white/10 overflow-hidden bg-white/5 transition-all duration-300">
+                <summary class="flex cursor-pointer list-none items-center justify-between px-6 py-5 font-semibold text-white hover:bg-white/5 group-open:bg-blue-500/10">
+                    <span class="lang-text" data-id="Apa kegunaan utama aplikasi ini?" data-en="What is this app for?">Apa kegunaan utama aplikasi ini?</span>
+                    <i class="fas fa-chevron-down text-blue-400 transition-transform duration-300 group-open:rotate-180"></i>
+                </summary>
+                <div class="px-6 py-5 text-sm text-slate-300 bg-black/20">Aplikasi ini menghitung estimasi kemenangan (win streak) untuk mencapai target Rank atau Win Rate di Mobile Legends secara presisi.</div>
+            </details>
+        </div>
+
+        <section class="relative py-20 px-6 accent-bg rounded-[3rem] text-center mb-20 shadow-2xl overflow-hidden group">
+    <div class="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-x-10 -translate-y-10 blur-2xl"></div>
+    <div class="absolute bottom-0 right-0 w-40 h-40 bg-purple-500/20 rounded-full translate-x-10 translate-y-10 blur-3xl"></div>
+
+    <div class="relative z-10">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4 lang-text" 
+            data-id="Siap untuk Push Rank?" 
+            data-en="Ready to push rank?">
+            Siap untuk Push Rank?
+        </h2>
+        <p class="text-blue-100 mb-10 max-w-lg mx-auto lang-text font-medium" 
+           data-id="Masukkan data akun Anda sekarang dan lihat estimasi akuratnya." 
+           data-en="Enter your account data now and see the accurate estimation.">
+           Masukkan data akun Anda sekarang dan lihat estimasi akuratnya.
+        </p>
+        <button onclick="document.getElementById('cRank').scrollIntoView({behavior: 'smooth'})" 
+                class="px-12 py-4 bg-white text-blue-600 font-black uppercase tracking-widest rounded-2xl hover:scale-110 hover:shadow-white/20 active:scale-95 transition-all duration-300 shadow-xl">
+            Start Now
+        </button>
+    </div>
+</section>
+
+    </main>
+
+    <footer class="py-8 px-6 bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-white/5">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-2">
+            
+                <span class="font-black text-gray-900 dark:text-white italic tracking-tighter uppercase">YR MLBB<span class="text-blue-500">PRO</span></span>
+            </div>
+            <div class="flex gap-4">
+                <a href="https://github.com/Ceyhee" target="_blank" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-blue-600 hover:text-white transition-all"><i class="fab fa-github"></i></a>
+                <a href="https://www.instagram.com/ajiee.zip" target="_blank" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-pink-600 hover:text-white transition-all"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/" target="_blank" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-blue-700 hover:text-white transition-all"><i class="fab fa-facebook-f"></i></a>
+            </div>
+            <p class="text-gray-500 dark:text-slate-500 text-[10px] font-bold uppercase tracking-widest">© 2026 AJI SUKMA &bull; ALL RIGHTS RESERVED</p>
+        </div>
+                    </footer>
+
+
+    <script>
+        const tiers = [
+            { name: "Grandmaster V", base: 0, mythic: false, defaultS: 0 }, { name: "Grandmaster IV", base: 4, mythic: false, defaultS: 0 }, { name: "Grandmaster III", base: 8, mythic: false, defaultS: 0 }, { name: "Grandmaster II", base: 12, mythic: false, defaultS: 0 }, { name: "Grandmaster I", base: 16, mythic: false, defaultS: 0 },
+            { name: "Epic V", base: 20, mythic: false, defaultS: 0 }, { name: "Epic IV", base: 25, mythic: false, defaultS: 0 }, { name: "Epic III", base: 30, mythic: false, defaultS: 0 }, { name: "Epic II", base: 35, mythic: false, defaultS: 0 }, { name: "Epic I", base: 40, mythic: false, defaultS: 0 },
+            { name: "Legend V", base: 45, mythic: false, defaultS: 0 }, { name: "Legend IV", base: 50, mythic: false, defaultS: 0 }, { name: "Legend III", base: 55, mythic: false, defaultS: 0 }, { name: "Legend II", base: 60, mythic: false, defaultS: 0 }, { name: "Legend I", base: 65, mythic: false, defaultS: 0 },
+            { name: "Mythic", base: 70, mythic: true, defaultS: 0 }, 
+            { name: "Mythic Honor", base: 70, mythic: true, defaultS: 25 }, 
+            { name: "Mythic Glory", base: 70, mythic: true, defaultS: 50 }, 
+            { name: "Mythic Immortal", base: 70, mythic: true, defaultS: 100 }
+        ];
+
+        const cSel = document.getElementById('cRank');
+        const tSel = document.getElementById('tRank');
+        tiers.forEach((t, i) => { 
+            const opt = `<option value="${i}">${t.name}</option>`;
+            cSel.innerHTML += opt; tSel.innerHTML += opt;
+        });
+
+        function syncStar(type) {
+            const starIn = document.getElementById(type + 'Star');
+            const rankSel = document.getElementById(type + 'Rank');
+            let val = parseInt(starIn.value) || 0;
+            let currentIdx = parseInt(rankSel.value);
+            if (currentIdx < 15 && val > 5) { starIn.value = 5; val = 5; }
+            if (val >= 100) rankSel.value = 18; 
+            else if (val >= 50) rankSel.value = 17; 
+            else if (val >= 25) rankSel.value = 16; 
+            else if (val > 5) rankSel.value = 15;
+        }
+
+        function syncRank(type) {
+            const rankSel = document.getElementById(type + 'Rank');
+            const starIn = document.getElementById(type + 'Star');
+            const tier = tiers[parseInt(rankSel.value)];
+            starIn.value = tier.defaultS;
+        }
+
+        function calculatePath() {
+            const cIdx = parseInt(cSel.value);
+            const tIdx = parseInt(tSel.value);
+            const cS = parseInt(document.getElementById('cStar').value) || 0;
+            const tS = parseInt(document.getElementById('tStar').value) || 0;
+            let totalCurrent = tiers[cIdx].base + cS;
+            let totalTarget = tiers[tIdx].base + tS;
+            let diff = totalTarget - totalCurrent;
+
+            let starsUnderMythic = (totalCurrent < 70) ? Math.min(diff, 70 - totalCurrent) : 0;
+            let starBonus = starsUnderMythic > 0 ? Math.floor(starsUnderMythic * 0.20) : 0;
+            let gradingBonus = (cIdx <= 14 && tIdx >= 15 && tS >= 15) ? 5 : 0;
+
+            document.getElementById('rankRes').classList.remove('hidden');
+            if (diff <= 0) { document.getElementById('rankSummary').innerText = "Target Reached!"; return; }
+            document.getElementById('netWin').innerText = diff;
+            document.getElementById('starBonus').innerText = "+" + starBonus;
+            document.getElementById('gradingBonus').innerText = "+" + gradingBonus;
+            document.getElementById('rankSummary').innerHTML = `Estimasi: <strong>${diff - starBonus - gradingBonus} Kemenangan Bersih</strong>.`;
+        }
+
+        function setLang(lang) {
+    const isID = lang === 'id';
+    
+    // Update status tombol navigasi (agar sinkron dengan fungsi lain)
+    document.getElementById('btn-id').className = isID ? "px-3 py-1.5 text-[10px] font-bold uppercase rounded-lg accent-bg transition-all" : "px-3 py-1.5 text-[10px] font-bold uppercase rounded-lg hover:bg-white/10 transition-all text-slate-400";
+    document.getElementById('btn-en').className = !isID ? "px-3 py-1.5 text-[10px] font-bold uppercase rounded-lg accent-bg transition-all" : "px-3 py-1.5 text-[10px] font-bold uppercase rounded-lg hover:bg-white/10 transition-all text-slate-400";
+    
+    // HANYA mengubah teks di dalam elemen ber-class lang-text
+    document.querySelectorAll('.lang-text').forEach(el => {
+        el.innerText = el.getAttribute('data-' + lang);
+    });
+}
+
+
+        function calcWR() {
+    const m = parseInt(document.getElementById('wrMatch').value);
+    const cw = parseFloat(document.getElementById('wrCurrent').value);
+    const tw = parseFloat(document.getElementById('wrTarget').value);
+    const isID = document.getElementById('btn-id').classList.contains('accent-bg');
+    
+    if (!m || isNaN(cw) || isNaN(tw)) return;
+    if (tw >= 100) return alert(isID ? "Target 100% mustahil!" : "100% Target is impossible!");
+
+    const wins = Math.round(m * (cw / 100));
+    const loss = m - wins;
+    const streakNeeded = Math.ceil((tw * m - 100 * wins) / (100 - tw));
+
+    document.getElementById('wrRes').classList.remove('hidden');
+    document.getElementById('vWin').innerText = wins;
+    document.getElementById('vLoss').innerText = loss;
+    document.getElementById('vStreak').innerText = (streakNeeded > 0 ? streakNeeded : 0) + " WIN";
+
+    document.getElementById('vMsgMain').innerText = isID 
+        ? `Dari total ${m} match, kamu sudah menang ${wins} kali. Untuk capai ${tw}%, kamu butuh menang bersih sebanyak:`
+        : `Out of ${m} matches, you've won ${wins} times. To reach ${tw}%, you need a straight win of:`;
+
+    const statusEl = document.getElementById('vAccountStatus');
+    const adviceEl = document.getElementById('vAdvice');
+    
+    let rating = {};
+
+    if (cw >= 85) {
+        rating = {
+            status: "DEWA TURUN RANK",
+            color: "bg-emerald-500 text-white",
+            txt: isID ? "“Main solo, tim random, tapi tetep menang. Sistem matchmaking yang minta maaf.”" : "“Solo queue, random team, yet still winning. Matchmaking system is the one apologizing.”",
+            aura: "Smurf ilegal tapi halal",
+            note: "Dicurigai: 'Ini akun siapa sih?'"
+        };
+    } else if (cw >= 75) {
+        rating = {
+            status: "PRO NYARIS RESMI",
+            color: "bg-blue-500 text-white",
+            txt: isID ? "“Kalah cuma karena internet, bukan skill.”" : "“Losing only due to internet, not skill.”",
+            aura: "Calon MVP, mantan anak turnamen RT",
+            note: "Masih bisa flex tanpa dosa."
+        };
+    } else if (cw >= 65) {
+        rating = {
+            status: "PEMAIN WARAS",
+            color: "bg-yellow-500 text-black",
+            txt: isID ? "“Kadang carry, kadang dicarry. Seimbang seperti hidup.”" : "“Sometimes carry, sometimes carried. Balanced like life.”",
+            aura: "Tau map, tau timing, kadang emosi",
+            note: "Masih aman buat mabar."
+        };
+    } else if (cw >= 60) {
+        rating = {
+            status: "RAKYAT JELATA RANK",
+            color: "bg-orange-500 text-white",
+            txt: isID ? "“Mainnya niat, hasilnya tergantung takdir.”" : "“Serious play, results depend on fate.”",
+            aura: "Rajin tapi sering ketemu tim eksperimen",
+            note: "Mulai sering bilang: 'Ini rank neraka'"
+        };
+    } else if (cw >= 58) {
+        rating = {
+            status: "PENJAGA BASE",
+            color: "bg-red-500 text-white",
+            txt: isID ? "“Gue gak feeder, cuma vision.”" : "“I'm not a feeder, just providing vision.”",
+            aura: "Objektif itu teori, war itu insting",
+            note: "Mulai sering disalahin walau diam."
+        };
+    } else if (cw >= 55) {
+        rating = {
+            status: "PEMAIN FILOSOFIS",
+            color: "bg-purple-500 text-white",
+            txt: isID ? "“Menang kalah itu ilusi, yang penting proses.”" : "“Win or lose is an illusion, the process matters.”",
+            aura: "Main buat healing, bukan ranking",
+            note: "Sering AFK sebentar… mikir hidup."
+        };
+    } else if (cw >= 50) {
+        rating = {
+            status: "SPESIALIS ALASAN",
+            color: "bg-slate-700 text-white",
+            txt: isID ? "“Hero gue di-nerf, bang.”" : "“My hero got nerfed, bro.”",
+            aura: "Pick meta tapi salah tangan",
+            note: "Role fleksibel: core, tank, salah semua"
+        };
+    } else if (cw >= 48) {
+        rating = {
+            status: "VETERAN MATCHMAKING",
+            color: "bg-amber-600 text-white",
+            txt: isID ? "“Udah biasa kalah.”" : "“Getting used to defeat.”",
+            aura: "Pernah di semua tier, tapi gak betah",
+            note: "Mainnya kuat… mentalnya lebih kuat."
+        };
+    } else {
+        rating = {
+            status: "NPC RANK",
+            color: "bg-red-900 text-white",
+            txt: isID ? "“Dia main MLBB, tapi MLBB juga mainin dia.”" : "“He plays MLBB, but MLBB also plays him.”",
+            aura: "Datang, mati, respawn, repeat",
+            note: "Hero favorit: apa saja yang kebuka"
+        };
+    }
+
+    statusEl.innerText = rating.status;
+    statusEl.className = `px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter ${rating.color}`;
+    
+    adviceEl.innerHTML = `
+        <p class="text-white font-medium italic">${rating.txt}</p>
+        <p class="text-slate-400 mt-1"><span class="text-blue-400 font-bold">Aura:</span> ${rating.aura}</p>
+        <p class="text-slate-400"><span class="text-emerald-400 font-bold">Catatan:</span> ${rating.note}</p>
+    `;
+}
+
+
+
+        // Initialize default view
+        syncRank('c'); syncRank('t');
+    </script>
+</body>
+</html>
